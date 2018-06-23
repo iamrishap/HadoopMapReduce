@@ -3,9 +3,6 @@ package comp9313.rishap;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -26,13 +23,15 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
  * Input is in format of (line number, line). Output is in format of ((w, u), co-occurrence count). 
  */
 
+// TODO: Make a custom WritableComparator for the Pair
+
 public class PairCooccurence {
 	
 	public static class WordPairTokenizer extends Mapper<Object, Text, Text, IntWritable>{
 		private final static IntWritable one = new IntWritable(1);
 		
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException{
-			StringTokenizer inputWords = new StringTokenizer(value.toString(), " *$&#/\t\n“—’\f\"'\\,.:;?![](){}<>~-_");
+			StringTokenizer inputWords = new StringTokenizer(value.toString(), " *$&#“—’/\t\n\f\"'\\,.:;?![](){}<>~-_");
 			ArrayList<String> wordsInLine = new ArrayList<String>();
 			String word1 = null;
 			String word2 = null;
