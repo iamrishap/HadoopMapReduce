@@ -18,10 +18,10 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class WordCountEfficient {
-	private final static IntWritable one = new IntWritable(1);
-	private static HashMap<String, Integer> coutingHashMap = new HashMap<String, Integer>();
+	
 	public static class WordTokenizer extends Mapper<Object, Text, Text, IntWritable>{
-		
+		private final static IntWritable one = new IntWritable(1);
+		private static HashMap<String, Integer> coutingHashMap = new HashMap<String, Integer>();
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException{
 			StringTokenizer inputWords = new StringTokenizer(value.toString()," *$&#/\t\n\f\"'\\,.:;?![](){}<>~-_");
 			while(inputWords.hasMoreTokens()){
@@ -33,7 +33,6 @@ public class WordCountEfficient {
 				}
 			}
 		}
-		
 		public void cleanup(Context context) throws IOException, InterruptedException{
 			Set <Entry<String, Integer>> entries = coutingHashMap.entrySet();
 			for(Entry<String, Integer> entry: entries){
@@ -41,6 +40,7 @@ public class WordCountEfficient {
 			}
 		}
 	}
+	
 	
 	public static class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritable>{
 		private IntWritable result = new IntWritable();

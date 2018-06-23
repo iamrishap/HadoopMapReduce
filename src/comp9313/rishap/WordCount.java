@@ -18,9 +18,9 @@ public class WordCount {
 	public static class WordTokenizer extends Mapper<Object, Text, Text, IntWritable>{
 		private final static IntWritable one = new IntWritable(1);
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException{
-			StringTokenizer inputWords = new StringTokenizer(value.toString());
+			StringTokenizer inputWords = new StringTokenizer(value.toString()," *$&#/\t\n\f\"'\\,.:;?![](){}<>~-_");
 			while(inputWords.hasMoreTokens()){
-				context.write(new Text(inputWords.nextToken()), one);
+				context.write(new Text(inputWords.nextToken().toLowerCase()), one);
 			}
 		}
 	}
